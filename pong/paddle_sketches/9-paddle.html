@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>p5</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="../../codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../../codemirror/addon/fold/foldgutter.css">
+        <link rel="stylesheet" href="../../codemirror/addon/dialog/dialog.css">
+        <link rel="stylesheet" href="../../codemirror/theme/solarized.css">
+        <link rel="stylesheet" href="../../codemirror/theme/monokai.css">
+        <link rel="stylesheet" href="../../style.css">
+
+        <script type="text/javascript" language="javascript" src="../../codemirror/lib/codemirror.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/search/searchcursor.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/search/search.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/dialog/dialog.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/edit/matchbrackets.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/edit/closebrackets.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/comment/comment.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/wrap/hardwrap.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/fold/foldcode.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/addon/fold/brace-fold.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/mode/javascript/javascript.js"></script>
+        <script type="text/javascript" language="javascript" src="../../codemirror/keymap/sublime.js"></script>
+        <script type="text/javascript" language="javascript" src="../../pong/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" language="javascript">
+
+            var sketchEditor = null,
+                container = null,
+                left = null,
+                right = null,
+                handle = null,
+                iframeSketch = null,
+                windowWidth = null,
+                windowHeight = null,
+                isResizing = false,
+                lastDownX = 0;
+
+            $(document).ready(function(){
+
+                isResizing = false;
+                lastDownX = 0;
+
+                container = $("#panel-container");
+                left = $("#left-panel");
+                right = $("#right-panel");
+                handle = $("#canvas-handle");
+                iframeSketch = createiFrame();
+
+                windowWidth = $(window).width();
+                windowHeight = $(window).height()*0.8;
+
+                sketchEditor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                  lineNumbers: true,
+                  lineWrapping: true,
+                  matchBrakets: true,
+                  closeBrakets: true,
+                  mode: "text/javascript"
+                });
+
+                sketchEditor.setSize(windowWidth/2, windowHeight);
+                // sketchEditor.setOption("theme", "solarized dark");
+                sketchEditor.setOption("theme", "solarized dark");
+
+                sketchEditor.on("change", function(cm, change) {
+                    // console.log("changed")
+
+                    if (iframeSketch) {
+                      iframeSketch.get(0).contentDocument.location.reload(true);
+                    }
+                });
+
+                left.css({'width': windowWidth/2, 'height': windowHeight});
+                right.css({'width': windowWidth/2, 'height': windowHeight});
+
+                $(window).resize(function() {
+
+                    windowWidth = $(window).width();
+                    windowHeight = $(window).height()*0.8;
+
+                    sketchEditor.setSize(windowWidth/2, windowHeight)
+
+                    left.css({'width': windowWidth/2, 'height': windowHeight});
+                    right.css({'width': windowWidth/2, 'height': windowHeight});
+                });
+
+                handle.on("mousedown", function(e){
+
+                    $(this).width('100px');
+
+                    //onsole.log('mousedown')
+
+                    isResizing = true;
+                    lastDownX = e.clientX;
+                });
+
+                $(document).on('mousemove', function (e) {
+
+                    //console.log('mousemove')
+
+                    // we don't want to do anything if we aren't resizing.
+                    if (!isResizing)
+                        return;
+
+                    if ((container.width() - (e.clientX - container.offset().left)) >= (windowWidth * 0.3) && (container.width() - (e.clientX - container.offset().left)) <= (windowWidth * 0.7))  {
+
+                        $("*").css('cursor', 'col-resize')
+
+                        right.css('width', container.width() - (e.clientX - container.offset().left));
+                        left.css('width', windowWidth - right.width());
+                        sketchEditor.setSize(windowWidth - right.width());
+
+                    }
+
+                }).on('mouseup', function (e) {
+
+                    //console.log('mouseup')
+
+                    handle.width('20px');
+
+                    // stop resizing
+                    isResizing = false;
+                    $("*").css('cursor', '')
+                });
+
+            });
+
+            function createiFrame(){
+
+              var iframe = $('<iframe id="iframe-sketch" src="../../codemirror/code.html">');
+              iframe.width("100%");
+              iframe.height("100%");
+
+              right.prepend(iframe);
+
+              return iframe;
+
+            }
+
+        </script>
+
+        <style> body {padding: 0; margin: 0;} </style>
+    </head>
+    <body>
+
+        <!--<h1>Title</h1>
+        <h2>description</h2>
+        <p>body text</p>-->
+
+        <div id="panel-container">
+            <div id="left-panel">
+                <textarea id="code" name="code">
+
+var player1;
+var player2;
+    
+function setup()
+{
+    createCanvas(windowWidth, windowHeight);
+    player1 = new Paddle(1);
+    player2 = new Paddle(2);
+}
+    
+function draw()
+{
+    background(0);
+    player1.draw();
+    player2.draw();
+    player1.move();
+    player2.move();
+}
+
+function Paddle(side)
+{
+    this.side = side;
+    if(this.side === 1)
+    {
+        this.position = createVector( 25 , height/2);
+    }
+    if(this.side === 2)
+    {
+        this.position = createVector( width-25, height/2);
+    }
+    this.width = 20;
+
+    this.height = height/5;
+
+    this.move = function()
+    {
+        if( this.side === 1 )
+        {
+            if(keyIsDown(87))
+            {
+              if(this.position.y > this.height/2)
+              {
+                  this.position.y -= 5;           
+              }
+            }
+            if(keyIsDown(83))
+            {
+              if(this.position.y < height - this.height/2)
+              {
+                this.position.y += 5;
+              }
+            }
+        }
+        if( this.side === 2 )
+        {
+            if(keyIsDown(UP_ARROW))
+            {
+                if(this.position.y > this.height/2)
+                {
+                    this.position.y -= 5;           
+                }
+            }
+            if(keyIsDown(DOWN_ARROW))
+            {
+                if(this.position.y < height - this.height/2)
+                {
+                    this.position.y += 5;
+                }
+            }
+        }
+    };
+
+    this.draw = function()
+    {
+    fill(255);
+    noStroke();
+    rectMode(CENTER);
+    rect(this.position.x, this.position.y,
+        this.width, this.height);
+    };
+}
+
+                </textarea>
+            </div>
+
+
+            <div id="right-panel">
+                <div id="canvas-handle"></div>
+            </div>
+        </div>
+
+    </body>
+</html>

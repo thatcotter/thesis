@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>2D Camera</h1>
+
+<p>So lets say you&#39;re helping a friend make a 2D platformer game. They&#39;re a little new at this, so they&#39;re getting a bit stuck. They have a few things already made, like the player, the ground, the inputs, and they even imported <a href="http://brm.io/matter-js/">Matter.js</a> to take care of the physics.</p>
+
+<p>The first thing we should do is take a look at their game and see how it&#39;s working. Try interacting with the game a bit, and read through the code that they&#39;ve written. If you need to restart the game, try editing the code to refresh the canvas. If you feel like you&#39;ve made a mistake in the code, you can also use command+Z or ctrl+Z to undo your changes.</p>
+
+<h3>Wait, what&#39;s Matter.js again?</h3>
+
+<p>If Matter.js is altogether alien to you, it might be worth opening up <a href="http://brm.io/matter-js/docs/">the documentation</a> or looking through <a href="https://github.com/liabru/matter-js/tree/master/examples">the examples</a>. There&#39;s also a good tutorial series on The Coding Train on <a href="https://youtu.be/urR596FsU68">how to use Matter.js with p5</a>. Your friend doesn&#39;t want to spend all day thinking about how to implement physics, so they just settled for using a physics library instead.</p>
+
+<p><strong>Arrow keys:</strong> Left / Right</p>
+
+<p><strong>Spacebar:</strong> Jump</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-noCamera.html"></iframe><p>The aesthetics of the game could use some polish, but your firend isn&#39;t really looking for feedback on that, and they can always improve that later anyway. You might have noticed a bigger problem with this game though: <strong>it&#39;s pretty small</strong>. Only the size of the game window, in fact. </p>
+
+<p>&quot;How do I make the level bigger?&quot; your friend might ask. Well, we could simply add more elements outside of the canvas so the player box doesn&#39;t fall off into infinity, but that&#39;s not really what they&#39;re asking here, is it? Their real question is:</p>
+
+<h3><em>How might I see more of this world as the player moves around it?</em></h3>
+
+<p>Lets take a moment to reflect on this. In p5, everything is drawn in relation to the origin point (0,0). By default, this is in the top left of the canvas.</p>
+
+<p><code>
+origin illustration here
+</code></p>
+
+<p>This means, in order to see other parts of the game, we&#39;ll have to <strong>move the origin</strong>. What&#39;s more, we need to move the origin <strong>in relation to the player</strong> so that it stays on the screen. So in order to emulate a camera that is following the player along, we&#39;ll need to do both of these.</p>
+
+<h3>In Summary:</h3>
+
+<ul><li>In order to see more of the game, we need to move the origin</li><li>In order to keep the player on the screen, we need to make the origin movements relational to the player object             </li></ul></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="../../index">Back</a></h3></li><li class="nav-link"><h3><a href="./move-origin">Next: Move the Origin</a></h3></li></ul></div></footer></div></div></body></html>

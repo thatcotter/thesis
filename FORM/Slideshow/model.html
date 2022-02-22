@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Modeling the State</h1>
+
+<p>Okay, now that there are slide classes set up, we need a way to keep track of them. After all, we can&#39;t call the draw method of every slide every frame. For one, we would only ever see the last slide, and all of those draw calls would certainly slow down your program.</p>
+
+<h3>What we need:</h3>
+
+<ul><li>An array containing all of our slides</li><li>A variable that keeps track of which slide needs to be shown</li><li>A way to to forward and back in the slideshow based on user inputs </li></ul>
+
+<p>With that in mind, lets outline the constructor and method of the Model class:</p>
+
+<pre><code>class Model
+{
+    constructor(){
+        this.slides
+        this.state
+    }
+    setup(){}
+    getInput(){}
+    next(){}
+    back(){}
+    draw(){}
+}</code></pre>
+
+<h3>Constructor</h3>
+
+<p>So Model has to keep track of the slides, and which one to show. This means that <strong>the slides have to be passed in as an array, and the state needs to start on the first slide</strong>. </p>
+
+<pre><code>...
+constructor(slides) //later, you&#39;ll pass an array into this argument
+{
+    this.slides = slides //the array wil then be assigned to this.slides
+    this.state = 0 //the state will start at 0 to line up with the first index o
+}
+...</code></pre>
+
+<h3>Setup</h3>
+
+<p>Since all of the slides in <code>this.slides</code> need to run their setup loops. You could just use a regular for loop to go through all your slides:</p>
+
+<pre><code>setup()
+{
+    for (let i = 0; i &lt; slides.length; i++) 
+    {
+        slides[i].setup()
+    }
+}</code></pre>
+
+<p>But it might be a little more neat and compact if you use a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of"><code>for of</code></a> loop:</p>
+
+<pre><code>setup()
+{
+    for (let slide of this.slides) 
+    {
+        slide.setup()
+    }
+}</code></pre>
+
+<h3>Draw</h3>
+
+<p>Now that you have an array of slides, you can use the state of your model to determine which slide is drawn.</p>
+
+<pre><code>draw()
+{
+    this.slides[this.state].draw()
+}</code></pre>
+
+<p>Because <code>this.state</code> is initially zero, the next behavior you&#39;ll need is </p>
+
+<h3>Back and Next</h3>
+
+<p>The methods that manipulate <code>this.state</code> are pretty straightforward: increment or decrement the state, but don&#39;t go past the first or last slides.</p>
+
+<pre><code>next()
+{
+    if(this.state &lt; this.slides.length-1)
+    this.state++
+}
+
+back()
+{
+    if(this.state &gt; 0)
+    this.state--
+}</code></pre>
+
+<h3>getInput</h3>
+
+<p>Now that you have methods to change the state, now you need a function to call them based on key inputs. </p>
+
+<pre><code>getInput(input)
+{
+    switch(keyCode){
+        case 37://left arrow
+        this.back()
+        break
+
+        case 39://right arrow
+        this.next()
+        break
+
+        case 32://space
+        this.next()
+        break
+    }
+}</code></pre></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./slide-class">Back</a></h3></li><li class="nav-link"><h3><a href="./integrate">Next</a></h3></li></ul></div></footer></div></div></body></html>

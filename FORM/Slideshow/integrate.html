@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Putting it all together</h1>
+
+<p>Cool! Now you have a model to handle your slides. All you need to do now is to bring it into your sketch</p>
+
+<pre><code>let myModel; //make a variable to store your model in
+let sketch1 = {};
+let sketch2 = {};
+let sketch3 = {};
+
+function setup() {
+createCanvas(windowWidth, windowHeight)
+defineSketches() //
+
+let titleOptions = { 
+    &quot;header&quot;: &quot;HELLO, WORLD!&quot;,
+    &quot;subHeader&quot;: &quot;subtitle&quot;,
+}
+let titleSlide = new StaticSlide(titleOptions)
+
+let endOptions = {
+    &quot;header&quot;: &quot;Thanks! (◡‿◡✿)&quot;
+}
+let endSlide = new StaticSlide(endOptions)
+myModel = new Model([titleSlide,
+                    sketch1,
+                    sketch2,
+                    sketch3,
+                    endSlide])
+for (slide of myModel.slides) {
+    slide.setup()
+}
+}</code></pre>
+
+<h3>Drawing</h3>
+
+<pre><code>function draw() {
+myModel.draw()
+}</code></pre>
+
+<h3>Input</h3>
+
+<pre><code>function keyPressed(){
+myModel.getInput(keyCode)
+}</code></pre></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./model">Back</a></h3></li><li class="nav-link"><h3><a href="../../index">Finish</a></h3></li></ul></div></footer></div></div></body></html>

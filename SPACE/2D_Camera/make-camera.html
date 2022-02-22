@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Making the Camera</h1>
+
+<p>Okay, before you start making a camera class, let&#39;s go over what it needs to do first.</p>
+
+<h3>A 2D Camera needs to:</h3>
+
+<ul><li>move the origin to see the game world</li><li>keep track of the player object&#39;s position</li></ul>
+
+<p>The first part we already have a pretty good idea of how to do. We can use <code>translate()</code> to move the origin around, but making an object that <em>just</em> translates could be a little tricky. Remember the <code>push()</code> and <code>pop()</code> functions? The canvas could get messy really fast if you don&#39;t revert the matrix when the camera is done, so you&#39;ll need those too. Because it would be hard to import the draw loop into a camera object, <strong>we&#39;ll need separate functions for when the camera transformation begins and ends.</strong> </p>
+
+<p>With that in mind, the first task breaks down even further</p>
+
+<ul><li>move the origin to see the game world</li><li>save the origin position using <code>push()</code></li><li><code>translate()</code> the origin based on a given value </li><li>revert the origin back to its default position using <code>pop()</code></li></ul>
+
+<p>This means that you&#39;ll need to make a <strong>function where the transformation value updates</strong>. </p>
+
+<p>Based on these requirements, we can begin to ouline a class that looks like this:</p><pre><code>class Camera
+{
+    constructor(){}
+    update(){}
+    begin(){}
+    end(){}
+}</code></pre><p>The <code>constructor()</code> and the <code>update()</code> functions can be made later when you start making the camera follow the player. For now, you just need to <strong>add <code>push()</code> and <code>translate()</code> to the <code>begin()</code> function</strong>, and put a translation value in the constructor. At this point, the value that you pass it is arbitrary, since you&#39;ll relate it to the player object&#39;s position later.</p><pre><code>class Camera
+{
+    constructor()
+    {
+        this.translation = createVector(0, 0);
+    }
+    update(){}
+    begin()
+    {
+        push()
+        translate(this.translation.x, this.translation.y)
+    }
+    end()
+    {
+        pop()
+    }
+}</code></pre><p>Now that you have your camera class started, let&#39;s make an instance of it in our game. First, we make a variable for our camera with <code>let cam;</code>, then we call it&#39;s constructor in the setup loop with <code>cam = new Camera()</code>.</p>
+
+<p>Finally, you can add the <code>cam.begin()</code> and <code>cam.end()</code> functions before and after drawing the other objects in our scene.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-makeCamera.html"></iframe><p>Try playing around with the <strong>x value of the camera&#39;s <code>this.translation</code> property</strong> and see how the canvas changes. If you&#39;re feeling fancy, why not try <code>sin(frameCount)</code> to animate the translation?</p>
+
+<p>When you&#39;re ready to move on, we can add the player-following behavior to the camera.</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./move-origin">Back                </a></h3></li><li class="nav-link"><h3><a href="./follow-player">Next: Following the player</a></h3></li></ul></div></footer></div></div></body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head><title>tAS: Pong</title><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script></head><body><link rel="stylesheet" type="text/css" media="all" href="../assets/sass/main.css"><div id="header" class="-2u"><div class="10u"><h1>Paddles</h1>
+
+<p>Let&#39;s start by listing out the things we&#39;ll need the Paddles to do.</p>
+
+<h3>Quick recap:</h3>
+
+<ol><li>Input-Driven Movement --- One button for each direction: up and down</li><li>The Paddles don&#39;t move beyond the top and bottom of the screen.</li><li>Inputs are different for each paddle</li></ol>
+
+<h3>Setting up the Class</h3>
+
+<p>First, let&#39;s set up a class in p5.js for our Paddles.</p>
+
+<p>(If you need a refresher on the syntax of making classes in p5.js, there&#39;s an <a href="https://p5js.org/examples/objects-objects.html">example in the documentation</a>)</p>
+
+<p>Lets first name the class using <code>function Paddle(){}</code>, and then fill in its scope with descriptive functions that we&#39;ll fill in as we go. For now, lets make a couple empty functions based on the three main behaviors we described above: &quot;input&quot;, &quot;move&quot;, and &quot;don&#39;t leave the screen.&quot; We also want the ball to be seen on the screen, so lets make another function and name it &quot;draw.&quot;</p><pre><code>function Paddle()  
+{
+  this.move = function(){};  
+  this.checkEdges = function(){};  
+  this.draw = function(){};  
+}</code></pre><p>Okay, now we need to make sure we can differentiate the Paddles when we instantiate them. That means we&#39;ll have to add an argument up at the top at the class, and some ways to store that argument. </p>
+
+<p>Since we need to differentiate the paddles based on which side they&#39;re on, we&#39;ll add an argument called <code>side</code> and give it either an argument of <code>1</code> 0r <code>2</code>. Then, inside the class, we can decide on the initial <code>position.x</code> of each paddle.</p>
+
+<p>(This might not be the most sustainable stragey in the long-run since someone else who might be building on your program could accidentally enter a number that isn&#39;t <code>1</code> or <code>2</code>, which could mess up the game. Fortunately, the use of the argument is pretty explicit in our constructor)</p><pre><code>function Paddle(side)
+{
+  if(side === 1)
+  {
+    this.position = createVector( 25 , height/2);
+  }
+  if(side === 2)
+  {
+    this.position = createVector( width-25, height/2);
+  }
+  this.width = 20;
+  this.height = height/5;
+  ...
+}</code></pre><p>We also added in some member variables for the width and height of the paddle. This way, we&#39;ll have everything we need to work with the draw function. I&#39;m assuming that we want a white, strokeless rectangle for our paddles, like in the original Pong.</p><pre><code>function Paddle(side)
+{
+  ...
+  this.draw = function()
+  {
+    fill(255);
+    noStroke();
+    rectMode(CENTER);
+    rect(this.position.x, this.position.y,
+        this.width, this.height);
+  };
+}</code></pre><p>Now we&#39;re ready to add the paddles to our sketch.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="paddle_sketches/4-paddle.html"></iframe><h3>Input</h3>
+
+<p>Great! Now that we have our paddles in the game, let&#39;s work on adding input for the paddles. There are <em>lots</em> of ways that we could add input! We could try to plug in a game pad, hook up some physical computing bits and plug it in through a Serial connection, or even have your inputs communicate over OSC. For now though, lets just stick to using the keyboard.</p>
+
+<p>In p5, we&#39;re already given a <a href="https://p5js.org/reference/#/p5/keyIsDown"><code>keyIsDown()</code></a> function to handle keyboard input. Let&#39;s see if we can change the background color while the <code>W</code> key is being pressed.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="paddle_sketches/5-paddle.html"></iframe><p>Notice how we passed in <code>87</code> as our argument for <code>keyIsDown()</code>. That&#39;s because <code>keyIsDown</code> takes the keyCode values of whatever key is pressed. Personally, I usually need to look up what key matches with what values, so <a href="http://keycode.info/">this site</a> is always a useful reference. (The value <code>87</code> as a key value is mapped to the <code>w</code> key, by the way)</p>
+
+<h3>Move</h3>
+
+<p>Okay, now that we have a way to take inputs, lets use it in our Paddle class. Let&#39;s start by using <code>w</code> and <code>s</code> to move the paddle up and down for now.</p><pre><code>function Paddle(side)
+{
+  ...
+  this.move = function()
+  {
+    if(keyIsDown(87))
+    {
+      this.y -= 5;
+    }
+    if(keyIsDown(83))
+    {
+      this.y += 5;
+    }
+  };
+  ...
+}</code></pre><p>And then we add the function into the p5 <code>draw()</code> loop to add the inputs to the sketch.</p><pre><code>var player1;
+var player2;
+ 
+function setup()
+{
+  player1 = new Paddle(1);
+  player2 = new Paddle(2);
+}
+ 
+function draw()
+{
+  background(0);
+  player1.move();
+  player1.draw();
+  player2.move();
+  player2.draw();
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="paddle_sketches/7-paddle.html"></iframe><p>Great! Well, sorta. While we did get the paddle class to receive inputs, pressing the <code>w</code> and <code>s</code> keys moves both of the paddles. How might we go about fixing this?</p>
+
+<p>Well, one solution might be to use the <code>side</code> value that we passed into the constructor earlier.</p>
+
+<p>What if you just used the value of <code>side</code> to determine which keys influence the position of each paddle? That might look something like this:</p><pre><code>function Paddle(side)
+{
+  ...
+  this.move = function()
+  {
+    if( this.side === 0 )
+    {
+      if(keyIsDown(87))
+      {
+        this.y -= 5;
+      }
+      if(keyIsDown(87))
+      {
+        this.y += 5;
+      }
+    }
+    if( this.side === 1 )
+    {
+      if(keyIsDown(38))
+      {
+        this.y -= 5;
+      }
+      if(keyIsDown(40))
+      {
+        this.y += 5;
+      }
+    }
+  };
+  ...
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="paddle_sketches/8-paddle.html"></iframe><p>Having all those nested <code>if</code> statements might not be the most elegant way to handle the inputs, but it&#39;ll be okay for now. (By the way, the <code>keyIsDown(38)</code> and <code>keyIsDown(40)</code> refers to the up and down keys on the keyboard).</p>
+
+<h3>Don&#39;t Leave the Screen</h3>
+
+<p>The only other thing to worry about is making sure the paddles don&#39;t move off the screen. You can acheive that by adding a little more logic to your <code>this.move()</code> function.</p><pre><code>function Paddle(side)
+{
+  ...
+  this.move = function()
+  {
+    if( this.side === 0 )
+    {
+      if(keyIsDown(87))
+      {
+         if(this.position &lt this.height/2)
+         {
+           this.y -= 5;
+         }
+      }
+      if(keyIsDown(83))
+      {
+        if(this.position &gt height - this.height/2)
+        {
+          this.y += 5;
+        }
+      }
+    }
+    if( this.side === 1 )
+    {
+      if(keyIsDown(38))
+      {
+        if(this.position &lt this.height/2)
+        {
+          this.y -= 5;           
+        }
+      }
+      if(keyIsDown(40))
+      {
+        if(this.position &gt height - this.height/2)
+        {
+          this.y += 5;
+        }
+      }
+    }
+  };
+  ...
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="paddle_sketches/9-paddle.html"></iframe><h3>Exercise: Elegant Movements</h3>
+
+<p>You might have noticed that the <code>this.move()</code> function is getting pretty crowded with <code>if</code> statements. How might you re-write this function so that it can be more readable to someone else?</p></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="index.html">Back</a></h3></li><li class="nav-link"><h3><a href="ball.html">Ball</a></h3></li><li class="nav-link"><h3><a href="scoreboard.html">Scoreboard</a></h3></li></ul></div></footer></body></html>

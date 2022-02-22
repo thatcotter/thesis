@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>FrameRate</h1>
+
+<h3>Making an animation for a client</h3>
+
+<p>Let&#39;s say that you&#39;re working on an animation for a client. They wanted an animated canvas that loops. So far, you have this:</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-60fps.html"></iframe><p>The trouble is, the client just informed you that this animation might be running on older hardware, so it has to run at 30 frames per second. Fortunately, you can just use the <code>frameRate()</code> function in the setup loop to fix that</p>
+
+<pre><code>framerate(30)</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-30fps.html"></iframe><h3>Oh no, it&#39;s too slow now!</h3>
+
+<p>You changed the framerate from 60 to 30, but now the animation plays <strong>half as fast</strong>. This is because the animation that&#39;s being done is <strong>frame-dependent</strong>. That means that the speed of change in the animation is directly proportional to the framerate of the canvas. That means we&#39;ll need to use the rate in change of time rahter than the rate in change of frames. This will make the animation run the same way, regardless of the frames per second (FPS) that the sketch runs at.</p>
+
+<h3>The fascinating problem of programmatic animation</h3>
+
+<p>This is one of the more interesting challenges of doing animations with programming. In conventional software engineering context, time is a much less interesting issue. If you&#39;re writing a server or the backend of an application, the main challenge you need to solve for is getting the program to run as quickly as possible. That isn&#39;t to say making a program run as quickly as possible can&#39;t be a rewarding challenge, meerly that its a much more linear and monotonic challenge than what we&#39;re trying to do.</p>
+
+<h3>Summary</h3>
+
+<p>In short, in order to make the animation frame-independent, we need to:</p>
+
+<ul><li>track what time it is each frame</li><li>compare the change in time  between frames</li><li>use the change in time to influence the theta</li></ul></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="../../index">Back</a></h3></li><li class="nav-link"><h3><a href="./timeline">Next</a></h3></li></ul></div></footer></div></div></body></html>

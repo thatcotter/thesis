@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Moving the Origin</h1>
+
+<p>Fortunately, if we want to change where the origin is on the canvas, we have a few functions built in to p5 that let us do just that. For making a 2D Camera that pans left and right, we can make good use of the <code>translate()</code> function.</p>
+
+<h3><a href="https://p5js.org/reference/#/p5/translate">Translate()</a></h3>
+
+<p>As you already know, <strong>the orgin position <code>(0,0)</code> is at the top left of the p5 canvas</strong>. Here&#39;s a sketch with a red circle drawn at the origin to illustrate.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-origin.html"></iframe><p>But the cool thing about <code>translate()</code> is that we can change where this dot is being draw on the canvas <strong>without changing the coordinates that it&#39;s being drawn at</strong>. </p>
+
+<p>To do this, call <code>translate()</code> with two arguments. The first is how the origin moves along the x-axis, and the second argument controlls how the origin moves along the y-axis. By using the arguments <code>width/2, height/2</code> the circle can move to the center.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/2-origin.html"></iframe><h3>But what about push() and pop()?</h3>
+
+<p>These functions act as &#39;bookmarks&#39; of a sort for the <code>translate()</code> function. When <code>push()</code> executes, p5 is remembering where the origin was when the <code>push()</code> function was called. <code>pop()</code> then reverts the origin back to where <code>push()</code> recorded. It&#39;s also common practice (but not required) to indent between each <code>push()</code> and <code>pop()</code>. In the example above, using them isn&#39;t necessary, but it comes in handy if you want to do a whole bunch of translations in a row.</p>
+
+<h3>Animate the translation</h3>
+
+<p>The amount of translation that the origin does can also be amiated over time, like so:</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/3-origin.html"></iframe><p>By passing the <code>frameCount</code> (the number of frames that the program has completed) into the <code>sin()</code> and <code>cos()</code> functions, we can make the circle revolve around the center of the screen while still drawinging it at <code>(0,0)</code>.</p>
+
+<h3>Why are you multiplying the framecount by a small number, and the result of sine/cosine by a larger number?</h3>
+
+<p>This largely has to do with the scale of <code>sin()</code> and <code>cos()</code>&#39;s inputs. Because their inputs are interpreted as radians (from 0 to about 6.28) counting in full inrements would result in a very fast animation of the translation. (Maybe, you want that, but for most that can be a little over-stimulating.) Sine and Cosine always return values that are between -1 and 1, so in order to makethe area in which the circle moves larger, the resulting value is multiplied by a larger number.</p>
+
+<h3>Next steps</h3>
+
+<p>Now that you&#39;re a little more familiar with doing matrix transformations by using <code>translate()</code>, you&#39;re ready to start making a camera for your friend.</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./index">Back                </a></h3></li><li class="nav-link"><h3><a href="./make-camera">Next: Making a Camera Class</a></h3></li></ul></div></footer></div></div></body></html>

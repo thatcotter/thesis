@@ -1,0 +1,186 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Slide Classes</h1>
+
+<h3>What we need</h3>
+
+<ul><li>Slides that can encapsulate the behavior of each or your sketches that you want to present</li><li>One type of slide that is static (text/image)</li><li>Another type of slide that is animated (p5 sketches)</li><li>A container for all of your slides</li><li>A way to keep track of what slide you&#39;re on</li><li>A way to go forward and backward in your slide deck</li></ul>
+
+<h3>Static Slides</h3>
+
+<p>These slides can afford to be a little more generic since text and images can be passed in as arguments. The only trouble is, you might not want to pass in every argument every time you define a slide. Having the arity for that many parameters would also give you argument lists a mile long!</p>
+
+<p>It might make sense to make all of your arguments optional by passing in one JSON object, then having the slide&#39;s constructor define each property conditionally, like so.</p>
+
+<pre><code>class StaticSlide
+{
+    constructor(options)
+    {
+        if (options.header) {
+            this.header = options.header
+        }
+        if (options.subHeader) {
+            this.subHeader = options.subHeader
+        }
+        if (options.bulletPoints) {
+            this.bulletPoints = options.bulletPoints
+        }
+        if (options.imgLink) {
+            this.imgLink = options.imgLink
+        }
+        if (options.background) {
+            this.background = options.background
+        } else {
+            this.background = color(242)
+        }
+        if (options.fillColor) {
+            this.fillColor = options.fillColor
+        } else {
+            this.fillColor = color(255, 0, 88)
+        }
+        if (options.imgLink) {
+            this.imgLink = options.imgLink
+        }
+        if (options.font) {
+            this.font = loadFont(options.font)
+        } else {
+            this.font = loadFont(&#39;assets/circular-book.otf&#39;)
+        }
+    }
+
+    setup()
+    {
+
+    }
+
+    draw()
+    {
+        background(this.background)
+        // textFont(this.font)
+        fill(this.fillColor)
+        if(this.header) this.drawHeader();
+        if(this.subHeader) this.drawSubHeader();
+    }
+
+    drawHeader()
+    {
+        textSize(48)
+        text(this.header, width*0.05, height*0.22)
+    }
+
+    drawSubHeader()
+    {
+        textSize(36)
+        textFont
+        text(this.subHeader, width*0.05, height*0.33)
+    }
+}</code></pre>
+
+<p>Then in the main sketch, you can make an object and pass in that object as an argument</p>
+
+<pre><code>let titleOptions = { 
+    &quot;header&quot;: &quot;HELLO, WORLD!&quot;,
+    &quot;subHeader&quot;: &quot;subtitle&quot;,
+
+}
+let titleSlide = new StaticSlide(titleOptions)
+
+let endOptions = {
+    &quot;header&quot;: &quot;Thanks! (◡‿◡✿)&quot;
+}
+let endSlide = new StaticSlide(endOptions)</code></pre>
+
+<h3>Adding to the slides</h3>
+
+<p>Now you have  couple slides that have headers and subheads, but how could we add a bit more to it? You can certainly adjust the layout in the draw loop, but what about images? Or bullet points? Feel free to add to it as you see fit.</p>
+
+<h3>Dynamic Slides</h3>
+
+<p>These slides will be a little harder to organize since each one will have to be specifically tailored to the sketch which is being drawn. Because each of the draw functions that they perform would be radically different, we can&#39;t make a single class for all of them.</p>
+
+<p>There could be an individual class for each sketch slide, but that would defeat the purpose of object-oriented programming.</p>
+
+<p>Instead, the sketches can be defined as json objects, then have their setup and draw functions appended with dot notation which can be aceive this like so:</p>
+
+<pre><code>//define the sketch as an empty object
+let sketch = {}; 
+
+//add the sketch&#39;s setup loop
+sketch.setup = () =&gt; 
+{
+    ...
+}
+
+//add the sketch&#39;s draw loop
+sketch.draw = () =&gt; 
+{
+    ...
+}
+
+//these loops are then called from within p5&#39;s 
+//setup and draw loops
+function setup() 
+{
+    sketch.setup()
+}
+
+function draw()
+{
+    sketch.draw()
+}</code></pre>
+
+<p>This doesn&#39;t save us from writing all of the code that we had before, but now you have the convenience of encapsulating the code for each sketch into two discrete methods.</p>
+
+<p>Now you can do this for each sketch that you have.</p>
+
+<pre><code>//define the sketch as an empty object
+let sketch1 = {} 
+let sketch2 = {} 
+let sketch3 = {}
+
+sketch1.setup = () =&gt; 
+{
+    ...
+}
+
+sketch1.draw = () =&gt; 
+{
+    ...
+}
+
+sketch2.setup = () =&gt; 
+{
+    ...
+}
+
+sketch2.draw = () =&gt; 
+{
+    ...
+}
+
+sketch3.setup = () =&gt; 
+{
+    ...
+}
+
+sketch3.draw = () =&gt; 
+{
+    ...
+}
+//these loops are then called from within p5&#39;s 
+//setup and draw loops
+function setup() 
+{
+    sketch1.setup()
+}
+
+function draw()
+{
+    sketch1.draw()
+}</code></pre>
+
+<p>Hmm, now that we look at that approach fleshed out though, there seems to be a lot of code before the <code>setup</code> loop. It might be good to swrap them in a function that can be put underneath the <code>draw</code> loop, or in a different file.</p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/3-dynamicsketches1.html"></iframe><p>That looks a little better. It hasn&#39;t functionally changed the program, but it has swept some of the messiness under the rug.</p>
+
+<p>Now that you have all of your slides, you need a way to switch between them. You could just put a wholce bunch of if statements into your draw loop, but there might be a cleaner way than that.</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./index">Back</a></h3></li><li class="nav-link"><h3><a href="./model">Next</a></h3></li></ul></div></footer></div></div></body></html>

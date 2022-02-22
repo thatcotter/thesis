@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Timeline Class</h1>
+
+<h3>Setting up the class</h3>
+
+<p>Okay, lets set up a class that do all of the tasks we just outlined.</p>
+
+<p>This tutorial is going to name the class &#39;Timeline&#39; since more animation functionality will be added to it in future tutorials.</p>
+
+<pre><code>class Timeline{}</code></pre>
+
+<p>Since the object only needs to compare two points in time (the current frame and the previous frame), it&#39;ll need to store those two values.</p>
+
+<pre><code>class Timeline
+{
+    constructor()
+    {
+        this.now
+        this.then
+    }
+}</code></pre>
+
+<h3>Getting the current time</h3>
+
+<p>Conveniently, javascript has a native method for getting the time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now"><code>Date.now()</code></a>. This returns the numer of milliseconds since January 1st, 1970. Why 1970? It&#39;s mostly boring reasons having to do with UNIX, which you can read more about <a href="https://en.wikipedia.org/wiki/Unix_time">here</a>, if you&#39;re curious.</p>
+
+<h6>Aside: <code>performance.now()</code></h6>
+
+<p>There&#39;s also <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/now"><code>performance.now()</code></a> if you want to get a more precise timestamp value, but you probably don&#39;t need it for this tutorial.</p>
+
+<h3>Updating <code>then</code> and <code>now</code></h3>
+
+<p>Cool, so now that you know what method will get you the time, it time to put it to use!</p>
+
+<p>Start by adding it to your constructor, then you can make an update function to reassign the values.</p>
+
+<pre><code>class Timeline
+{
+    constructor()
+    {
+        this.now = Date.now()
+        this.then
+    }
+    update()
+    {
+        this.then = this.now
+        this.now = Date.now()
+    }
+}</code></pre>
+
+<h3>Delta Time</h3>
+
+<p>Great! Now that there&#39;s a <code>then</code> and <code>now</code> being recorded, the difference between them (or the delta) can be found. All you have to do is make a function that subtracts <code>then</code> from <code>now</code></p>
+
+<pre><code>class Timeline
+{
+    deltaTime()
+    {
+        return this.now - this.then
+    }
+}</code></pre>
+
+<p>Now you&#39;re ready to start integrating this with the rest of the animation!</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./index">Back</a></h3></li><li class="nav-link"><h3><a href="./integrate">Next</a></h3></li></ul></div></footer></div></div></body></html>

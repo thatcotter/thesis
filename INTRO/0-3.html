@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="../js/jquery.min.js"></script><script src="../js/p5.min.js"></script><script src="../js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../assets/sass/main.css"></head><body><h1>Setting up P5.js</h1><p>If you&#39;re new to the workflow of p5.js, a lot of the drawing fuctions should look familiar if you&#39;re coming from Processing or openFrameworks (e.g. rect() and ellipse()). What might not look so familiar is the workflow. This is just a quick guide to help get you familiar with what a p5 project looks like and how it might be structured.</p>
+<h2>What is p5?</h2><p>In essence, p5 is a javascript library that lets you make a canvas on a web page and draw on it. p5 also has a lot of libraries which lets you access web apis, interact with the DOM on your webpage, and work with text inputs. </p>
+<h2>Downloading p5.js</h2><p>Fortunately, there&#39;s very little that we need to download or install to set p5 set up. All we need to do is go to <a href="https://p5js.org">p5js.org/download</a> and click the link that says &quot;Complete Library&quot;. This gives you a zip file which you can extract into a folder that looks like this:</p>
+<p><img src="./ScreenShot2018-02-19at2.28.59PM.png" alt="ScreenShot2018-02-19at2.28.59PM.png"></p>
+<p>The first folder has the optional addons for p5, the javascript files at the bottom have the core code for the p5 library, and the &quot;empty example folder&quot;</p>
+<p><img src="./ScreenShot2018-02-19at2.32.11PM.png" alt="ScreenShot2018-02-19at2.32.11PM.png"></p>
+<p>Inside that folder we&#39;ll find the two files that you&#39;ll usually be working with on smaller p5 projects; <code>index.html</code> and <code>sketch.js</code>.</p>
+<p>But before we start working with these files, lets duplicate them and name the copy.</p>
+<h2>Making a new sketch</h2><p>If you&#39;re working on a bigger, more professional project, you probably wouldn&#39;t use the method I&#39;m prescribing now. In fact, you might not be using p5 at all. But since p5 uses the heuristic of a &#39;sketchbook,&#39; we&#39;ll lean into that, and treat each project folder like a page in our own personal sketchbook.</p>
+<p>To do so, lets duplicate the <code>empty-example</code> folder and rename it something appropriate to the project we&#39;re working on. Since we&#39;re familiarizing ourselves with p5, lets call it <code>hello-p5</code>.</p>
+<p><img src="./ScreenShot2018-02-19at3.08.26PM.png" alt="ScreenShot2018-02-19at3.08.26PM.png"></p>
+<p>Now lets open up the folder inside your text editor of choice. (If you don&#39;t have a favorite text editor, might I suggest <a href="https://code.visualstudio.com/">Visual Studio Code</a>?) Before we start in on the <code>sketch.js</code> file, lets look at whats going on inside the <code>index.html</code> file. It should look something like this.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta name=&quot;viewport&quot; width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0&gt;
+        &lt;style&gt; body {padding: 0; margin: 0;} &lt;/style&gt;
+        &lt;script src=&quot;../p5.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;../addons/p5.dom.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;../addons/p5.sound.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;sketch.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>So you might have noticed that there isn&#39;t a lot going on here, at least not in the <code>&lt;body&gt;</code> of the page. Everything here is about tying the javascript files that we have together and running them using the <code>&lt;script&gt;</code> tag.</p>
+<p>Now let&#39;s look at the <code>sketch.js</code> file.</p>
+<pre><code>function setup() {
+// put setup code here
+}
+
+function draw() {
+// put drawing code here
+}
+</code></pre><p>As the comments suggest, the <code>setup()</code> loop runs only once, and the <code>draw()</code> loop runs continuously. This is where we&#39;ll be adding code for many of the examples in this book.</p>
+<p>Typically, the first thing you need to do in a p5 sketch is add a canvas to the page. We do this by calling the function <code>createCanvas()</code> and passing in the <code>x</code> and <code>y</code> dimensions of the canvas. So if we wanted to make a canvas that is 400 by 300 pixels, we&#39;d write:</p>
+<pre><code>function setup() 
+{
+createCanvas(400, 300);
+}
+</code></pre><p>Alternatively, if we wanted to make the canvas the size of the browser window, we can write:</p>
+<pre><code>function setup() 
+{
+createCanvas(windowWidth, windowHeight);
+}
+</code></pre><p>If you need to brush up on the p5 API, there&#39;s a lot neat <a href="https://p5js.org/examples/">examples</a> and <a href="https://p5js.org/reference/">refences</a> on the <a href="https://p5js.org/">p5 site</a>.</p><footer id="footer"><div class="inner"><ul class="copyright"><li>Copyright © <a href="http://thatcotter.github.io/" target="blank">Andrew Cotter</a> 2017 - 2018</li></ul></div></footer></body></html>iv><footer id="footer"><div class="inner"><ul class="copyright"><li>Copyright © <a href="http://thatcotter.github.io/" target="blank">Andrew Cotter</a> 2017 - 2018</li></ul></div></footer></body></html>

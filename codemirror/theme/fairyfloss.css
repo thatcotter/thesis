@@ -1,0 +1,31 @@
+/* Based on Sublime Text's fairyfloss theme */
+
+.cm-s-fairyfloss.CodeMirror {background: #5A5475; color: #F8F8F2;}
+.cm-s-fairyfloss div.CodeMirror-selected {background: rgb(126, 113, 185) !important;}
+.cm-s-fairyfloss .CodeMirror-gutters {background: #5A5475; color: #F8F8F2; border-right: 0px;}
+.cm-s-fairyfloss .CodeMirror-guttermarker { color: #FFB8D1; }
+.cm-s-fairyfloss .CodeMirror-guttermarker-subtle { color: #FFB8D1; }
+.cm-s-fairyfloss .CodeMirror-linenumber {color: #F8F8F2;}
+.cm-s-fairyfloss .CodeMirror-cursor {border-left: 1px solid #F8F8F2 !important;}
+
+.cm-s-fairyfloss span.cm-comment {color: #E6C000;}
+.cm-s-fairyfloss span.cm-atom {color: #C5A3FF;}
+.cm-s-fairyfloss span.cm-number {color: #C5A3FF;}
+
+.cm-s-fairyfloss span.cm-property, .cm-s-fairyfloss span.cm-attribute {color: #FFB8D1;}
+.cm-s-fairyfloss span.cm-keyword {color: #C2FFDF;}
+.cm-s-fairyfloss span.cm-string {color: rgb(255, 242, 130);}
+
+.cm-s-fairyfloss span.cm-variable {color: #F8F8F2;}
+.cm-s-fairyfloss span.cm-variable-2 {color: #FFB8D1;}
+.cm-s-fairyfloss span.cm-def {color: #FFB8D1;}
+.cm-s-fairyfloss span.cm-bracket {color: #FFB8D1;}
+.cm-s-fairyfloss span.cm-tag {color: #FFB8D1;}
+.cm-s-fairyfloss span.cm-link {color: #D2B9FA;}
+.cm-s-fairyfloss span.cm-error {background: #FFB8D1; color: #f8f8f0;}
+
+.cm-s-fairyfloss .CodeMirror-activeline-background {background: #373831 !important;}
+.cm-s-fairyfloss .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}

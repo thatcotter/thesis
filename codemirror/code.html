@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>p5</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<script type="text/javascript" language="javascript" src="../assets/js/jquery.min.js"></script>
+
+		<script type="text/javascript" language="javascript">
+
+		$(document).ready(function(){
+
+			// console.log(parent.sketchEditor.getValue());
+
+			$("#p5-data").html(parent.sketchEditor.getValue());
+
+		});
+
+		</script>
+
+		<script type="text/javascript" language="javascript" src="../assets/js/p5.min.js"></script>
+		<script type="text/javascript" language="javascript" src="../assets/js/p5.dom.min.js"></script>
+		<script type="text/javascript" language="javascript" src="../assets/js/matter.min.js"></script>
+		<script type="text/javascript" language="javascript" src="../assets/js/BoxPlayer.js"></script>
+		
+	    <!-- <script type="text/javascript" language="javascript" src="../assets/js/p5.sound.min.js"></script> -->
+
+        <style>
+        	body {
+        		border: 0;
+        		outline: 0;
+        		padding: 0;
+        		margin: 0;
+        		background-color: #EFE9E9;
+        		overflow: hidden;
+        	}
+
+        	#defaultCanvas {
+        		overflow: hidden;
+        	}
+        </style>
+    </head>
+    <body>
+
+    <script id="p5-data" language="javascript"></script>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Integrating the Timeline</h1>
+
+<h3>Integrating <code>.deltaTime()</code></h3>
+
+<p>Now let&#39;s add a Timeline object to the animation and replace the <code>frameCount()</code> logic with <code>deltaTime()</code>. </p><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/3-add-class.html"></iframe><h3>But now the animation is way too fast!</h3>
+
+<p>Oh no! Now the animation is going much faster than it was before. This is because when <code>frameCount*0.01</code> was being used, <code>theta</code> was increasing by about 0.02 each frame. now that <code>deltaTime</code> is being used, it&#39;s increasing by about 32 (at 30 FPS) each frame. That&#39;s because 32 milliseconds have elapsed since the last frame. </p>
+
+<h3>Returning seconds instead of milliseconds</h3>
+
+<p>The solution to this is to convert the deltaTime to miliseconds. This can be done by simply dividing the deltaTime value returned by 1000. You could divide each call to <code>deltaTime()</code>, but it&#39;ll probably save you more time in the long run to add that division to the Timeline function.</p>
+
+<pre><code>deltaTime()
+{
+    return (this.now - this.then) * 0.001
+}</code></pre>
+
+<p>From there, you can scale up the speed of the animation by multiplying <code>deltaTime()</code> before adding it to <code>t</code>. The decision on how much to multiply the deltaTime by is a matter of aethetics and personal preference (and the preference of your hypothetical client).</p>
+
+<pre><code>t += mTime.deltaTime() * 5</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/4-divide.html"></iframe><p>Great! Now the animation will run at the same speed, regardless of its framerate. Try changing the <code>framerate()</code> in the setup loop, and see how the animation plays out when you change the argument passed in.</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./timeline">Back</a></h3></li><li class="nav-link"><h3><a href="../../index">Finish</a></h3></li></ul></div></footer></div></div></body></html>

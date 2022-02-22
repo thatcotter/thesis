@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><title>tAS: Pong</title><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script></head><body><link rel="stylesheet" type="text/css" media="all" href="../assets/sass/main.css"><div id="header" class="-2u"><div class="10u"><h1>Scoreboard</h1>
+
+<p>Alright, the scoreboard is probably the simplest component of this particular pong game. The main thing you&#39;ll need is a pair of variables that keep track of each player&#39;s scores. These scores can be updated by the ball when it leaves the screen, since that&#39;s the scoring condition. Of course, this can get more complicated as the development of your game goes on, depending on how many players you want to add, how many balls you add to your game, and so on. But just keeping score in mind, let&#39;s go ahead and set up a class for your scoreboard. </p>
+
+<h3>Setting up the Class</h3>
+
+<p>(If you need a refresher on the syntax of making classes in p5.js, there&#39;s an <a href="https://p5js.org/examples/objects-objects.html">example in the documentation</a>)</p>
+
+<p>Lets first name the class using <code>function Scoreboard(){}</code>, and then fill in its scope with descriptive functions and properties. Since there&#39;s only two variables to keep track of you can make two numbers and set their initial value to zero. You&#39;ll then need a way to show the score, which is where the draw function comes in.</p><pre> <code>function ScoreBoard()
+{
+  this.p1Score = 0;
+  this.p2Score = 0;
+   this.draw = function(){};
+}</code></pre><p>Since the manipulation of the score will be handled by the ball, there isn&#39;t a lot you need to do with <code>p1Score</code> and <code>p2Score</code> just yet. For now, you can fill in the draw function. The value of each <code>score</code> variable can be displayed on the screen with p5&#39;s <code>text()</code> function.</p><pre><code>function Paddle()
+{
+ ...
+ this.draw = function()
+ {
+   textSize(24);
+   fill(255);
+   text(this.p1Score, width-75, 25);
+   text(this.p1Score, width+75, 25);
+ };
+}</code></pre><p>In this example, the position of each score is set to 75 pixels on either side of the center of the x-axis, and 25 pixels from the top. Maybe you want them to be on the left and right edges of the screen? </p></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="index.html">Back</a></h3></li><li class="nav-link"><h3><a href="ball.html">Ball</a></h3></li><li class="nav-link"><h3><a href="paddles.html">Paddles</a></h3></li></ul></div></footer></body></html>

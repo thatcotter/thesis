@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>Grokking Creative Code</title><script src="/assets/js/jquery.min.js"></script><script src="/assets/js/p5.min.js"></script><script src="/assets/js/p5.dom.min.js"></script><script>window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+}); </script><link rel="stylesheet" href="../../assets/sass/main.css"></head><body><div id="wrapper"><div class="inside"><div id="head"><div class="section"><h1> </h1><h1> </h1></div></div><div id="main"><div class="10u"><div class="-2u"><div class="section"><h1>Following the Player</h1>
+
+<p>Now that the camera is set up and can translate the world, now it&#39;s time to start translating it in relation to the player. In order to do this, the camera first needs to <strong>know where the player is</strong>. This can be done in the <code>update()</code> function that you outlined earlier.</p>
+
+<p>By passing in a <code>target</code> value into <code>update()</code>, the update function can manipulate <code>this.translation</code>. Since we only need the <code>x</code> coordinate of the player object, you can leave the <code>y</code> value of the translation at <code>0</code>.</p>
+
+<pre><code>class Camera
+{
+    constructor()
+    {
+        this.translation = createVector(0, 0)
+    }
+
+    update(target)
+    {
+        this.translation = createVector(target.x,0)
+    }
+    ...
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/1-follow.html"></iframe><h2>Passing in the player position</h2>
+
+<p>Now lets see how that looks when we bring the update function into the draw loop. In the draw loop, you&#39;ll need to call <code>cam.update()</code> and pass in the position of the player object&#39;s position (<code>player.body.position</code>)</p>
+
+<pre><code>...
+function draw() 
+{
+    background(51);
+    Engine.update(engine)
+    player.update()
+
+    cam.update(player.body.position)
+    cam.begin()
+    ...
+    cam.end()
+}
+...</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/2-follow.html"></iframe><h2>Why <code>.body</code>?</h2>
+
+<p>Because the player object is a matter.js object, it has a <a href="http://brm.io/matter-js/docs/classes/Body.html"><code>.body</code> property</a> that contains all of the physics information that the rest of matter.js needs to run the </p>
+
+<h2>Wait, the translation is going the wrong way!</h2>
+
+<p>Since the translation is moving the origin, we need to move it in the <strong>opposite direction of the thing we&#39;re tracking.</strong> Lets change the camera&#39;s <code>update()</code> function to reflect this.</p>
+
+<pre><code>class Camera
+{
+    constructor()
+    {
+        this.translation = createVector(0, 0)
+    }
+
+    update(target)
+    {
+        this.translation = createVector(-target.x,0)
+    }
+...
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/3-follow.html"></iframe><h2>Hmm, still not quite right 🤔</h2>
+
+<p>Looks like the player ends up right at the edge of the canvas now. To fix this, let&#39;s add an offset to the translation so the player is in the center. Adding half of the width to the translation should be enough.</p>
+
+<pre><code>class Camera
+{
+...    
+    update(target)
+    {
+        this.translation = createVector(-target.x+width/2,0)
+    }
+...
+}</code></pre><iframe width="100%" height="800" scrolling="no" frameborder="no" src="sketches/4-follow.html"></iframe><p>Great! Now the camera works! The rest of the level could use a bit more designing and fleshing out, but we can leave that to your friend&#39;s creative discretion.</p></div></div></div></div><footer id="footer"><div class="inner"><ul class="copyright"><li class="nav-link"><h3> <a href="./make-camera">Back                </a></h3></li><li class="nav-link"><h3><a href="../../index">Finish</a></h3></li></ul></div></footer></div></div></body></html>
